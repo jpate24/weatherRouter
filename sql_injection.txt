@@ -1,0 +1,27 @@
+1. In order to clear the database, I inputted "get age=20;DROP TABLE soldier;". I figured out that the
+table name is soldier by looking at the .sqlite3 file in DB BROWSER. At first, I tried appending the
+query to the add command but that didn't work so I assumed that the inputs were being checked for validity.
+I then looked at the get <condition> command. This seemed more promising because the condition
+looked like something that would be added directly after a WHERE query and it would be added in without
+type checking to allow for a range of conditions which the user might want to check for. Therefore,
+I decided to append the sql query to that command which worked.
+
+2. By typing in
+"get age=20; CREATE TABLE Persons ( PersonID int, LastName varchar(255), FirstName varchar(255));"
+I was able to create a new table in the database called Persons with a column for id, first name and
+last name.
+By typing in "get age=20;UPDATE soldier SET age=99 WHERE name='Erun';" I was able to set the age of Erun
+to 99.
+With inspiration from https://www.w3schools.com/sql/sql_injection.asp, I typed in "get age=20 OR 1=1".
+This gave me every entry because 1=1 is always true. This is not useful in this case because get with
+no specified condition returns every entry anyway.
+
+3. In order to ensure that no SQL injections occur on my own software, I could validate user inputs in all
+cases. For example, I could prevent user inputs which contain a semi-colon from being processed. Although
+this would prevent the attack I used, there is still a possibility of other types of SQL injection
+attacks. I could also prevent certain terms such as DROP, DELETE and SELECT from being part of the user
+input. Although this may work, it would likely cause other issues where users are unable to use commands
+innocently as their inputs may contain these terms anyway.
+Also, although it may not work in the case of the get <condition> command, using SQL parameters will
+cause user inputs to be treated literally, and not actual SQL. This could prevent many SQL injection
+attacks.
